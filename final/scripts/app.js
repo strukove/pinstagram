@@ -20,8 +20,29 @@
     isLoading: true,
     spinner: document.querySelector('.loader'),
     container: document.querySelector('.main'),
-    imageUploader: document.getElementById("image-uploader")
+    imageUploader: document.getElementById("image-uploader"),
+    imageTag: document.getElementById("img")
   };
+
+  // Get a reference to the database service
+  var database = firebase.database();
+  function writeUserData(imageCode) {
+    database.ref('users/1').set({
+      imageCode : imageCode
+    });
+  }
+
+  initImage();
+  function initImage() {
+    // var userId = firebase.auth().currentUser.uid;
+    var userId = 1;
+
+    database.ref('/users/' + userId).once('value').then(function(data) {
+      if (data.val() == null ) { return; }
+
+      app.imageTag.src = data.val().imageCode;
+    });
+  }
 
 
   /*****************************************************************************
@@ -135,43 +156,47 @@
              .register('./service-worker.js')
              .then(function() { console.log('Service Worker Registered'); });
   }
+
+  function geoFindMe() {
+
+    if (!navigator.geolocation){
+      console.log("Geolocation is not supported by your browser");
+      // output.innerHTML = ;
+      return;
+    }
+
+    function success(position) {
+      var latitude  = position.coords.latitude;
+      var longitude = position.coords.longitude;
+
+      console.log('Latitude is ' + latitude + '° Longitude is ' + longitude + '°');
+
+      // var img = new Image();
+      // img.src = "https://maps.googleapis.com/maps/api/staticmap?center=" + latitude + "," + longitude + "&zoom=13&size=300x300&sensor=false";
+
+      // output.appendChild(img);
+    }
+
+    function error() {
+      console.log("Unable to retrieve your location");
+    }
+
+    // output.innerHTML = "<p>Locating…</p>";
+
+    navigator.geolocation.getCurrentPosition(success, error);
+  }
+
+  function readFile() {
+    if (this.files && this.files[0]) {
+      var FR= new FileReader();
+      FR.onload = function(e) {
+        let imgSrc = e.target.result;
+        app.imageTag.src = imgSrc;
+        writeUserData(imgSrc);
+      };
+      FR.readAsDataURL( this.files[0] );
+    }
+  }
+
+
 })();
-
-function geoFindMe() {
-
-  if (!navigator.geolocation){
-    console.log("Geolocation is not supported by your browser");
-    // output.innerHTML = ;
-    return;
-  }
-
-  function success(position) {
-    var latitude  = position.coords.latitude;
-    var longitude = position.coords.longitude;
-
-    console.log('Latitude is ' + latitude + '° Longitude is ' + longitude + '°');
-
-    // var img = new Image();
-    // img.src = "https://maps.googleapis.com/maps/api/staticmap?center=" + latitude + "," + longitude + "&zoom=13&size=300x300&sensor=false";
-
-    // output.appendChild(img);
-  }
-
-  function error() {
-    console.log("Unable to retrieve your location");
-  }
-
-  // output.innerHTML = "<p>Locating…</p>";
-
-  navigator.geolocation.getCurrentPosition(success, error);
-}
-
-function readFile() {
-  if (this.files && this.files[0]) {
-    var FR= new FileReader();
-    FR.onload = function(e) {
-      document.getElementById("img").src = e.target.result;
-    };
-    FR.readAsDataURL( this.files[0] );
-  }
-}
