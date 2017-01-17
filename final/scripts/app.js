@@ -41,6 +41,7 @@
       if (data.val() == null ) { return; }
 
       app.imageTag.src = data.val().imageCode;
+      app.spinner.
     });
   }
 
@@ -53,73 +54,7 @@
 
   app.imageUploader.addEventListener("change", readFile, false);
 
-  // document.getElementById('butRefresh').addEventListener('click', function() {
-  // });
-
-
-  /*****************************************************************************
-   *
-   * Methods to update/refresh the UI
-   *
-   ****************************************************************************/
-
   geoFindMe();
-
-  /*****************************************************************************
-   *
-   * Methods for dealing with the model
-   *
-   ****************************************************************************/
-
-  /*
-   * Gets a forecast for a specific city and updates the card with the data.
-   * getForecast() first checks if the weather data is in the cache. If so,
-   * then it gets that data and populates the card with the cached data.
-   * Then, getForecast() goes to the network for fresh data. If the network
-   * request goes through, then the card gets updated a second time with the
-   * freshest data.
-   */
-  app.getForecast = function(key, label) {
-
-    // TODO add cache logic here
-    if ('caches' in window) {
-      /*
-       * Check if the service worker has already cached this city's weather
-       * data. If the service worker has the data, then display the cached
-       * data while the app fetches the latest data.
-       */
-      caches.match(url).then(function(response) {
-        if (response) {
-          response.json().then(function updateFromCache(json) {
-            var results = json.query.results;
-            results.key = key;
-            results.label = label;
-            results.created = json.query.created;
-            app.updateForecastCard(results);
-          });
-        }
-      });
-    }
-    // Fetch the latest data.
-    var request = new XMLHttpRequest();
-    request.onreadystatechange = function() {
-      if (request.readyState === XMLHttpRequest.DONE) {
-        if (request.status === 200) {
-          var response = JSON.parse(request.response);
-          var results = response.query.results;
-          results.key = key;
-          results.label = label;
-          results.created = response.query.created;
-          // app.updateForecastCard(results);
-        }
-      } else {
-        // Return the initial weather forecast since no data is available.
-        // app.updateForecastCard(initialWeatherForecast);
-      }
-    };
-    request.open('GET', url);
-    request.send();
-  };
 
   // Iterate all of the cards and attempt to get the latest forecast data
   app.updateForecasts = function() {
@@ -171,6 +106,7 @@
 
       console.log('Latitude is ' + latitude + '° Longitude is ' + longitude + '°');
 
+      // https://maps.googleapis.com/maps/api/staticmap?center=50.026033899999995,36.2249422&zoom=14&size=6000x6000&scale=2&maptype=roadmap&key=AIzaSyBDlyCV2UdLosDp3GK1g-vqwpXGJMsh4uk
       // var img = new Image();
       // img.src = "https://maps.googleapis.com/maps/api/staticmap?center=" + latitude + "," + longitude + "&zoom=13&size=300x300&sensor=false";
 
