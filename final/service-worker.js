@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-var dataCacheName = 'weatherData-v1';
-var cacheName = 'weatherPWA-final-1';
+var dataCacheName = 'pinstagramData-v1';
+var cacheName = 'pinstagramData-final-1';
 var filesToCache = [
   '/',
   '/index.html',
@@ -31,7 +31,8 @@ var filesToCache = [
   '/images/sleet.png',
   '/images/snow.png',
   '/images/thunderstorm.png',
-  '/images/wind.png'
+  '/images/wind.png',
+  'https://firebasestorage.googleapis.com/v0/b/pinstagram-369c8.appspot.com/o/staticmap.png?alt=media&token=dd974bf9-96bb-42ea-a22a-1b62e501b8f2'
 ];
 
 self.addEventListener('install', function(e) {
