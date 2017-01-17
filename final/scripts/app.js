@@ -21,7 +21,8 @@
     spinner: document.querySelector('.loader'),
     container: document.querySelector('.main'),
     imageUploader: document.getElementById("image-uploader"),
-    imageTag: document.getElementById("img")
+    imageTag: document.getElementById("img"),
+    mapTag: document.getElementById("map-background")
   };
 
   // Get a reference to the database service
@@ -41,7 +42,6 @@
       if (data.val() == null ) { return; }
 
       app.imageTag.src = data.val().imageCode;
-      app.spinner.
     });
   }
 
@@ -96,7 +96,6 @@
 
     if (!navigator.geolocation){
       console.log("Geolocation is not supported by your browser");
-      // output.innerHTML = ;
       return;
     }
 
@@ -106,11 +105,8 @@
 
       console.log('Latitude is ' + latitude + '° Longitude is ' + longitude + '°');
 
-      // https://maps.googleapis.com/maps/api/staticmap?center=50.026033899999995,36.2249422&zoom=14&size=6000x6000&scale=2&maptype=roadmap&key=AIzaSyBDlyCV2UdLosDp3GK1g-vqwpXGJMsh4uk
-      // var img = new Image();
-      // img.src = "https://maps.googleapis.com/maps/api/staticmap?center=" + latitude + "," + longitude + "&zoom=13&size=300x300&sensor=false";
-
-      // output.appendChild(img);
+      var mapImageSrc = "https://maps.googleapis.com/maps/api/staticmap?center=" + latitude + "," + longitude + "&zoom=14&size=6000x6000&scale=2&maptype=roadmap&key=AIzaSyBDlyCV2UdLosDp3GK1g-vqwpXGJMsh4uk";
+      app.mapTag.src = mapImageSrc;
     }
 
     function error() {
