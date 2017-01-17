@@ -19,7 +19,8 @@
   var app = {
     isLoading: true,
     spinner: document.querySelector('.loader'),
-    container: document.querySelector('.main')
+    container: document.querySelector('.main'),
+    imageUploader: document.getElementById("image-uploader")
   };
 
 
@@ -28,6 +29,8 @@
    * Event listeners for UI elements
    *
    ****************************************************************************/
+
+  app.imageUploader.addEventListener("change", readFile, false);
 
   // document.getElementById('butRefresh').addEventListener('click', function() {
   // });
@@ -38,6 +41,8 @@
    * Methods to update/refresh the UI
    *
    ****************************************************************************/
+
+  geoFindMe();
 
   /*****************************************************************************
    *
@@ -144,7 +149,7 @@ function geoFindMe() {
     var latitude  = position.coords.latitude;
     var longitude = position.coords.longitude;
 
-    console.log('Latitude is ' + latitude + '° <br>Longitude is ' + longitude + '°');
+    console.log('Latitude is ' + latitude + '° Longitude is ' + longitude + '°');
 
     // var img = new Image();
     // img.src = "https://maps.googleapis.com/maps/api/staticmap?center=" + latitude + "," + longitude + "&zoom=13&size=300x300&sensor=false";
@@ -160,4 +165,13 @@ function geoFindMe() {
 
   navigator.geolocation.getCurrentPosition(success, error);
 }
-geoFindMe();
+
+function readFile() {
+  if (this.files && this.files[0]) {
+    var FR= new FileReader();
+    FR.onload = function(e) {
+      document.getElementById("img").src = e.target.result;
+    };
+    FR.readAsDataURL( this.files[0] );
+  }
+}
